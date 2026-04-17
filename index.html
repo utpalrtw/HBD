@@ -1,168 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta charset="UTF-8">
-<title>Happy Birthday ❤️</title>
-
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  text-align: center;
-  background: linear-gradient(120deg, #ff9a9e, #fad0c4);
-  color: #fff;
-  overflow: hidden;
-}
-
-/* Full screen fix */
-html, body {
-  height: 100%;
-}
-
-/* Container */
-.container {
-  margin-top: 3vh;
-}
-
-/* Title */
-h1 {
-  font-size: 6vw;
-}
-
-/* Slideshow */
-.slideshow {
-  width: 90%;
-  max-width: 320px;
-  aspect-ratio: 1/1;
-  margin: 20px auto;
-  position: relative;
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.slide {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transition: 1s;
-}
-
-.slide.active {
-  opacity: 1;
-}
-
-/* Message */
-#message {
-  font-size: 1.2em;
-  margin: 15px;
-}
-
-/* Button */
-button {
-  padding: 12px 25px;
-  border-radius: 25px;
-  border: none;
-  background: #ff6f91;
-  color: white;
-}
-
-/* Popup */
-#popup, #finalScreen {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0,0,0,0.85);
-  padding: 20px;
-  border-radius: 20px;
-  z-index: 5;
-}
-
-/* Hearts */
-.heart {
-  position: fixed;
-  font-size: 20px;
-  animation: floatUp 4s linear forwards;
-}
-
-@keyframes floatUp {
-  to {
-    transform: translateY(-100vh);
-    opacity: 0;
-  }
-}
-
-/* Sparkle */
-.sparkle {
-  position: fixed;
-  font-size: 14px;
-  pointer-events: none;
-  animation: sparkleAnim 1s linear forwards;
-}
-
-@keyframes sparkleAnim {
-  to {
-    transform: scale(2);
-    opacity: 0;
-  }
-}
-
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-}
-</style>
-</head>
-
-<body>
-
-<canvas id="fireworks"></canvas>
-
-<div class="container">
-<h1>🎂 Happy Birthday Sweetie 🥰</h1>
-
-<div class="slideshow">
-<img src="img1.jpeg" class="slide active">
-<img src="img2.jpeg" class="slide">
-<img src="img3.jpeg" class="slide">
-<img src="img4.jpg" class="slide">
-<img src="img5.jpeg" class="slide">
-<img src="img6.jpeg" class="slide">
-<img src="img7.jpeg" class="slide">
-<img src="img8.jpg" class="slide">
-<img src="img9.jpeg" class="slide" id="lastSlide">
-</div>
-
-<div id="message"></div>
-
-<button onclick="launchFireworks()">🎆 Surprise 🎆</button>
-
-<audio id="bgMusic" loop>
-<source src="music.mp3">
-</audio>
-
-<audio id="heartbeat">
-<source src="heartbeat.mp3">
-</audio>
-
-</div>
-
-<div id="popup">
-❤️ Will you always be mine? ❤️<br><br>
-<button onclick="loveBurst()">💖 YES 💖</button>
-</div>
-
-<div id="finalScreen">
-❤️ HAPPY BIRTHDAY BEBU ❤️
-</div>
-
 <script>
+// GET ELEMENTS (FIX)
+const popup = document.getElementById('popup');
+const finalScreen = document.getElementById('finalScreen');
+
 // TYPEWRITER
 const text = `Happy Birthday my love ❤️
 You are my happiness, my peace, my everything.
@@ -190,7 +30,7 @@ setInterval(() => {
 
   if (slides[index].id === 'lastSlide') {
     setTimeout(() => {
-      popup.style.display = 'block';
+      popup.style.display = 'block'; // ✅ FIXED
       launchFireworks();
     }, 1000);
   }
@@ -205,8 +45,8 @@ function loveBurst() {
 
   if (navigator.vibrate) navigator.vibrate([200,100,200]);
 
-  music.volume = 0.2;
-  heartbeat.play();
+  if (music) music.volume = 0.2;
+  if (heartbeat) heartbeat.play().catch(()=>{});
 
   for (let i = 0; i < 30; i++) {
     let h = document.createElement('div');
@@ -222,8 +62,8 @@ function loveBurst() {
   }
 
   setTimeout(()=>{
-    music.volume = 0.6;
-    finalScreen.style.display = 'block';
+    if (music) music.volume = 0.6;
+    finalScreen.style.display = 'block'; // ✅ FIXED
   },2000);
 }
 
@@ -271,7 +111,7 @@ function launchFireworks(){
   createFirework(Math.random()*canvas.width, Math.random()*canvas.height/2);
 }
 
-// SPARKLE + HEART TRAIL (TOUCH)
+// SPARKLE (TOUCH)
 document.addEventListener('touchmove', (e)=>{
   let t = document.createElement('div');
   t.className='sparkle';
@@ -282,10 +122,10 @@ document.addEventListener('touchmove', (e)=>{
   setTimeout(()=>t.remove(),1000);
 });
 
-// MUSIC START FIX
+// MUSIC FIX
 document.body.addEventListener('click', ()=>{
   let music=document.getElementById('bgMusic');
-  if(music.paused) music.play();
+  if(music && music.paused) music.play().catch(()=>{});
 });
 
 // RESIZE
@@ -294,6 +134,3 @@ window.onresize=()=>{
   canvas.height=innerHeight;
 };
 </script>
-
-</body>
-</html>
