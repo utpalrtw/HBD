@@ -200,7 +200,7 @@ function loveBurst() {
   }
 
   // Hearts animation
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 35; i++) {
     let heart = document.createElement('div');
     heart.className = 'heart';
     heart.innerText = '💕';
@@ -212,7 +212,7 @@ function loveBurst() {
   }
 
   // Fireworks burst at same time
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 8; i++) {
     setTimeout(() => {
       launchFireworks();
     }, i * 300);
@@ -229,7 +229,7 @@ function loveBurst() {
   document.getElementById('heartbeat').play();
 
   // Hearts
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 35; i++) {
     let heart = document.createElement('div');
     heart.className = 'heart';
     heart.innerText = '💕';
@@ -255,12 +255,12 @@ canvas.height = window.innerHeight;
 let particles = [];
 
 function createFirework(x, y) {
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 60; i++) {
     particles.push({
       x: x,
       y: y,
       angle: Math.random() * 2 * Math.PI,
-      speed: Math.random() * 5 + 2,
+      speed: Math.random() * 5 + 3,
       life: 100
     });
   }
