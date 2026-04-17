@@ -1,338 +1,299 @@
 <!DOCTYPE html>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <title>Happy Birthday ❤️</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Arial', sans-serif;
-      text-align: center;
-      background: linear-gradient(120deg, #ff9a9e, #fad0c4);
-      color: #fff;
-      overflow-x: hidden;
-    }
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Happy Birthday ❤️</title>
 
-    .container {
-      margin-top: 5vh;
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: linear-gradient(120deg, #ff9a9e, #fad0c4);
+  color: #fff;
+  overflow: hidden;
+}
 
-    h1 {
-      font-size: 6vw;
-      /* scales with screen */
-    }
+/* Full screen fix */
+html, body {
+  height: 100%;
+}
 
-    #message {
-      font-size: 4vw;
-    }
+/* Container */
+.container {
+  margin-top: 3vh;
+}
 
-    button {
-      width: 80%;
-      max-width: 250px;
-    }
+/* Title */
+h1 {
+  font-size: 6vw;
+}
 
-    .slideshow {
-      width: 90%;
-      /* responsive width */
-      max-width: 320px;
-      /* limit size */
-      aspect-ratio: 1/1;
-      /* perfect square */
-      margin: 20px auto;
-      position: relative;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    }
+/* Slideshow */
+.slideshow {
+  width: 90%;
+  max-width: 320px;
+  aspect-ratio: 1/1;
+  margin: 20px auto;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+}
 
-    .slide {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-    }
+.slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: 1s;
+}
 
-    .slide.active {
-      opacity: 1;
-    }
+.slide.active {
+  opacity: 1;
+}
 
-    #message {
-      font-size: 1.2em;
-      margin: 20px;
-      line-height: 1.6;
-      min-height: 120px;
-    }
+/* Message */
+#message {
+  font-size: 1.2em;
+  margin: 15px;
+}
 
-    button {
-      padding: 12px 25px;
-      font-size: 1em;
-      border: none;
-      border-radius: 25px;
-      background: #ff6f91;
-      color: white;
-      cursor: pointer;
-      margin: 10px;
-    }
+/* Button */
+button {
+  padding: 12px 25px;
+  border-radius: 25px;
+  border: none;
+  background: #ff6f91;
+  color: white;
+}
 
-    #popup,
-    #finalScreen {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0, 0, 0, 0.85);
-      padding: 25px;
-      border-radius: 20px;
-      z-index: 5;
-      font-size: 1.4em;
-    }
+/* Popup */
+#popup, #finalScreen {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.85);
+  padding: 20px;
+  border-radius: 20px;
+  z-index: 5;
+}
 
-    #finalScreen {
-      font-size: 1.8em;
-    }
+/* Hearts */
+.heart {
+  position: fixed;
+  font-size: 20px;
+  animation: floatUp 4s linear forwards;
+}
 
-    .heart {
-      position: fixed;
-      font-size: 24px;
-      animation: floatUp 4s linear forwards;
-      z-index: 10;
-    }
+@keyframes floatUp {
+  to {
+    transform: translateY(-100vh);
+    opacity: 0;
+  }
+}
 
-    @keyframes floatUp {
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-      }
+/* Sparkle */
+.sparkle {
+  position: fixed;
+  font-size: 14px;
+  pointer-events: none;
+  animation: sparkleAnim 1s linear forwards;
+}
 
-      100% {
-        transform: translateY(-100vh) scale(1.5);
-        opacity: 0;
-      }
-    }
+@keyframes sparkleAnim {
+  to {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
 
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      z-index: 1;
-    }
-  </style>
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+</style>
 </head>
 
 <body>
 
-  <canvas id="fireworks"></canvas>
+<canvas id="fireworks"></canvas>
 
-  <div class="container">
-    <h1>🎂 Happy Birthday Sweetie 🥰</h1>
+<div class="container">
+<h1>🎂 Happy Birthday Sweetie 🥰</h1>
 
-    <div class="slideshow">
-      <img src="img1.jpeg" class="slide active">
-      <img src="img2.jpeg" class="slide">
-      <img src="img3.jpeg" class="slide">
-      <img src="img4.jpg" class="slide">
-      <img src="img5.jpeg" class="slide">
-      <img src="img6.jpeg" class="slide">
-      <img src="img7.jpeg" class="slide">
-      <img src="img8.jpg" class="slide">
-      <img src="img9.jpeg" class="slide" id="lastSlide">
-    </div>
+<div class="slideshow">
+<img src="img1.jpeg" class="slide active">
+<img src="img2.jpeg" class="slide">
+<img src="img3.jpeg" class="slide">
+<img src="img4.jpg" class="slide">
+<img src="img5.jpeg" class="slide">
+<img src="img6.jpeg" class="slide">
+<img src="img7.jpeg" class="slide">
+<img src="img8.jpg" class="slide">
+<img src="img9.jpeg" class="slide" id="lastSlide">
+</div>
 
-    <div id="message"></div>
+<div id="message"></div>
 
-    <button onclick="launchFireworks()">🎆🎆🎆</button>
+<button onclick="launchFireworks()">🎆 Surprise 🎆</button>
 
-    <!-- Background Music -->
-    <audio id="bgMusic" loop>
-      <source src="music.mp3" type="audio/mpeg">
-    </audio>
+<audio id="bgMusic" loop>
+<source src="music.mp3">
+</audio>
 
-    <!-- Heartbeat sound -->
-    <audio id="heartbeat">
-      <source src="heartbeat.mp3" type="audio/mpeg">
-    </audio>
-  </div>
+<audio id="heartbeat">
+<source src="heartbeat.mp3">
+</audio>
 
-  <div id="popup">
-    ❤️ Will you always be mine? ❤️<br><br>
-    <button onclick="loveBurst()">💖YES💖</button>
-  </div>
+</div>
 
-  <div id="finalScreen">
-    ❤️ HAPPY BIRTHADAY BEBU ❤️
-  </div>
+<div id="popup">
+❤️ Will you always be mine? ❤️<br><br>
+<button onclick="loveBurst()">💖 YES 💖</button>
+</div>
 
-  <script>
-    // Typewriter
-    const text = `Happy Birthday, my love ❤️\nOn your special day, I wish you endless happiness, a heart full of peace.\nand a life filled with all the love you truly deserve.\nI love you endlessly 🥰`;
-    let i = 0;
-    function typeWriter() {
-      if (i < text.length) {
-        document.getElementById("message").innerHTML += text.charAt(i) === '\n' ? '<br>' : text.charAt(i);
-        i++;
-        setTimeout(typeWriter, 40);
-      }
-    }
-    typeWriter();
+<div id="finalScreen">
+❤️ HAPPY BIRTHDAY BEBU ❤️
+</div>
 
-    // Slideshow
-    let slides = document.querySelectorAll('.slide');
-    let index = 0;
-    setInterval(() => {
-      slides[index].classList.remove('active');
-      index = (index + 1) % slides.length;
-      slides[index].classList.add('active');
+<script>
+// TYPEWRITER
+const text = `Happy Birthday my love ❤️
+You are my happiness, my peace, my everything.
+I love you endlessly 🥰`;
 
-      if (slides[index].id === 'lastSlide') {
-        setTimeout(() => {
-          document.getElementById('popup').style.display = 'block';
-          launchFireworks();
-        }, 1500);
-      }
-    }, 2500);
+let i = 0;
+function typeWriter() {
+  if (i < text.length) {
+    document.getElementById("message").innerHTML += 
+    text.charAt(i) === '\n' ? '<br>' : text.charAt(i);
+    i++;
+    setTimeout(typeWriter, 40);
+  }
+}
+typeWriter();
 
-    // Love burst + merged sound effects
-    function loveBurst() {
-      {
+// SLIDESHOW
+let slides = document.querySelectorAll('.slide');
+let index = 0;
 
-        document.getElementById('popup').style.display = 'none';
+setInterval(() => {
+  slides[index].classList.remove('active');
+  index = (index + 1) % slides.length;
+  slides[index].classList.add('active');
 
-        const music = document.getElementById('bgMusic');
-        const heartbeat = document.getElementById('heartbeat');
+  if (slides[index].id === 'lastSlide') {
+    setTimeout(() => {
+      popup.style.display = 'block';
+      launchFireworks();
+    }, 1000);
+  }
+}, 2500);
 
-        // Vibrate (Android)
-        if (navigator.vibrate) {
-          navigator.vibrate([200, 100, 200, 100, 300]);
-        }
+// LOVE BURST
+function loveBurst() {
+  popup.style.display = 'none';
 
-        // Lower background music for effect
-        if (music) {
-          music.volume = 0.2;
-        }
+  let music = document.getElementById('bgMusic');
+  let heartbeat = document.getElementById('heartbeat');
 
-        // Play heartbeat synced
-        if (heartbeat) {
-          heartbeat.currentTime = 0;
-          heartbeat.play().catch(() => { });
-        }
+  if (navigator.vibrate) navigator.vibrate([200,100,200]);
 
-        // Hearts animation
-        for (let i = 0; i < 30; i++) {
-          let heart = document.createElement('div');
-          heart.className = 'heart';
-          heart.innerText = '💕';
-          heart.style.left = Math.random() * window.innerWidth + 'px';
-          heart.style.bottom = '0px';
-          document.body.appendChild(heart);
+  music.volume = 0.2;
+  heartbeat.play();
 
-          setTimeout(() => heart.remove(), 4000);
-        }
+  for (let i = 0; i < 30; i++) {
+    let h = document.createElement('div');
+    h.className = 'heart';
+    h.innerText = '💕';
+    h.style.left = Math.random()*window.innerWidth+'px';
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),4000);
+  }
 
-        // Fireworks burst at same time
-        for (let i = 0; i < 5; i++) {
-          setTimeout(() => {
-            launchFireworks();
-          }, i * 300);
-        }
+  for (let i = 0; i < 5; i++) {
+    setTimeout(launchFireworks, i*300);
+  }
 
-        // Restore music + final screen
-        setTimeout(() => {
-          if (music) music.volume = 0.6;
-          document.getElementById('finalScreen').style.display = 'block';
-        }, 2500);
-      }
+  setTimeout(()=>{
+    music.volume = 0.6;
+    finalScreen.style.display = 'block';
+  },2000);
+}
 
-      // Heartbeat sound
-      document.getElementById('heartbeat').play();
+// FIREWORKS
+const canvas = document.getElementById('fireworks');
+const ctx = canvas.getContext('2d');
 
-      // Hearts
-      for (let i = 0; i < 30; i++) {
-        let heart = document.createElement('div');
-        heart.className = 'heart';
-        heart.innerText = '💕';
-        heart.style.left = Math.random() * window.innerWidth + 'px';
-        heart.style.bottom = '0px';
-        document.body.appendChild(heart);
+canvas.width = innerWidth;
+canvas.height = innerHeight;
 
-        setTimeout(() => heart.remove(), 4000);
-      }
+let particles = [];
 
-      // Final screen after delay
-      setTimeout(() => {
-        document.getElementById('finalScreen').style.display = 'block';
-      }, 2000);
-    }
-
-    // Fireworks
-    const canvas = document.getElementById('fireworks');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    let particles = [];
-
-    function createFirework(x, y) {
-      for (let i = 0; i < 50; i++) {
-        particles.push({
-          x: x,
-          y: y,
-          angle: Math.random() * 2 * Math.PI,
-          speed: Math.random() * 5 + 2,
-          life: 100
-        });
-      }
-    }
-
-    function animate() {
-      ctx.fillStyle = 'rgba(0,0,0,0.1)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      particles.forEach((p, index) => {
-        p.x += Math.cos(p.angle) * p.speed;
-        p.y += Math.sin(p.angle) * p.speed;
-        p.life--;
-
-        ctx.fillStyle = 'white';
-        ctx.fillRect(p.x, p.y, 2, 2);
-
-        if (p.life <= 0) particles.splice(index, 1);
-      });
-
-      requestAnimationFrame(animate);
-    }
-    animate();
-
-    function launchFireworks() {
-      createFirework(Math.random() * canvas.width, Math.random() * canvas.height / 3);
-    }
-
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+function createFirework(x,y){
+  for(let i=0;i<50;i++){
+    particles.push({
+      x,y,
+      angle:Math.random()*6.28,
+      speed:Math.random()*5+2,
+      life:100
     });
-    // Auto play music after user interaction (important for Android)
-    document.body.addEventListener('click', () => {
-      const music = document.getElementById('bgMusic');
-      if (music.paused) {
-        music.volume = 0.6; // soft romantic volume
-        music.play().catch(() => { });
-      }
-    });
+  }
+}
 
-  </script>
+function animate(){
+  ctx.fillStyle='rgba(0,0,0,0.1)';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  for(let i=particles.length-1;i>=0;i--){
+    let p=particles[i];
+    p.x+=Math.cos(p.angle)*p.speed;
+    p.y+=Math.sin(p.angle)*p.speed;
+    p.life--;
+
+    ctx.fillStyle='white';
+    ctx.fillRect(p.x,p.y,2,2);
+
+    if(p.life<=0) particles.splice(i,1);
+  }
+
+  requestAnimationFrame(animate);
+}
+animate();
+
+function launchFireworks(){
+  createFirework(Math.random()*canvas.width, Math.random()*canvas.height/2);
+}
+
+// SPARKLE + HEART TRAIL (TOUCH)
+document.addEventListener('touchmove', (e)=>{
+  let t = document.createElement('div');
+  t.className='sparkle';
+  t.innerText='✨';
+  t.style.left=e.touches[0].clientX+'px';
+  t.style.top=e.touches[0].clientY+'px';
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),1000);
+});
+
+// MUSIC START FIX
+document.body.addEventListener('click', ()=>{
+  let music=document.getElementById('bgMusic');
+  if(music.paused) music.play();
+});
+
+// RESIZE
+window.onresize=()=>{
+  canvas.width=innerWidth;
+  canvas.height=innerHeight;
+};
+</script>
 
 </body>
-
 </html>
