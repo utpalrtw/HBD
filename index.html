@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Happy Birthday ❤️</title>
   <style>
     body {
@@ -12,28 +11,20 @@
       background: linear-gradient(120deg, #ff9a9e, #fad0c4);
       color: #fff;
       overflow-x: hidden;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
     }
 
     .container {
       margin-top: 5vh;
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
+      padding: 20px;
+      position: relative;
+      z-index: 2;
     }
 
-    h1 {
-      font-size: 6vw;
-    }
+    h1 { font-size: 2.5em; }
 
     .slideshow {
-      width: 90%;
-      max-width: 320px;
-      aspect-ratio: 1/1;
+      width: 320px;
+      height: 320px;
       margin: 20px auto;
       position: relative;
       border-radius: 20px;
@@ -43,28 +34,26 @@
 
     .slide {
       position: absolute;
-      top: 0;
-      left: 0;
+      inset-inline-start: 20px;
+      inset-block-start: 20px;
       width: 100%;
       height: 100%;
       object-fit: cover;
       opacity: 0;
-      transition: opacity 1s ease-in-out;
+      transition: margin-right 4s ease-in-out;
     }
 
     .slide.active { opacity: 1; }
 
     #message {
-      font-size: 4vw;
+      font-size: 1.2em;
       margin: 20px;
       line-height: 1.6;
       min-height: 120px;
     }
 
     button {
-      width: 80%;
-      max-width: 250px;
-      padding: 12px;
+      padding: 12px 25px;
       font-size: 1em;
       border: none;
       border-radius: 25px;
@@ -84,11 +73,11 @@
       padding: 25px;
       border-radius: 20px;
       z-index: 5;
-      font-size: 1.2em;
+      font-size: 1.4em;
     }
 
     #finalScreen {
-      font-size: 1.6em;
+      font-size: 1.8em;
     }
 
     .heart {
@@ -99,8 +88,8 @@
     }
 
     @keyframes floatUp {
-      0% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(-100vh); opacity: 0; }
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
     }
 
     canvas {
@@ -123,28 +112,19 @@
     <img src="img1.jpeg" class="slide active">
     <img src="img2.jpeg" class="slide">
     <img src="img3.jpeg" class="slide">
-    <img src="img4.jpg" class="slide">
-    <img src="img5.jpeg" class="slide">
-    <img src="img6.jpeg" class="slide">
-    <img src="img7.jpeg" class="slide">
-    <img src="img8.jpg" class="slide">
-
-    <img src="img9.jpg" class="slide" id="lastSlide">
+    <img src="img4.jpeg" class="slide" id="lastSlide">
   </div>
 
   <div id="message"></div>
 
-  <!-- One line message -->
-  <input type="text" id="oneLineMsg" placeholder="Write your message ❤️" style="padding:10px;border-radius:20px;border:none;width:80%;max-width:250px;">
-  <button onclick="showOneLine()">Show ❤️</button>
-  <div id="showMsg" style="margin-top:10px;font-size:1.2em;"></div>
-
   <button onclick="launchFireworks()">🎆🎆🎆</button>
 
-  <audio id="bgMusic" loop muted>
+  <!-- Background Music -->
+  <audio id="bgMusic" loop>
     <source src="music.mp3" type="audio/mpeg">
   </audio>
 
+  <!-- Heartbeat sound -->
   <audio id="heartbeat">
     <source src="heartbeat.mp3" type="audio/mpeg">
   </audio>
@@ -155,13 +135,13 @@
   <button onclick="loveBurst()">Yes 💖</button>
 </div>
 
-<div id="finalScreen">
-  ❤️ I Love You Forever ❤️
+<div id="">
+  ❤️ HAPPY BIRTHADAY BEBU ❤️
 </div>
 
 <script>
 // Typewriter
-const text = `Happy Birthday, my love ❤️\nOn your special day, I wish you endless happiness and love.\nI love you endlessly 🥰`;
+const text = `Happy Birthday, my love ❤️\nOn your special day, I wish you endless happiness, a heart full of peace.\nand a life filled with all the love you truly deserve.\nI love you endlessly 🥰`;
 let i = 0;
 function typeWriter() {
   if (i < text.length) {
@@ -188,26 +168,32 @@ setInterval(() => {
   }
 }, 2500);
 
-function showOneLine() {
-  const msg = document.getElementById("oneLineMsg").value;
-  document.getElementById("showMsg").innerHTML = "💌 " + msg + " 💌";
-}
-
+// Love burst + merged sound effects
 function loveBurst() {
+{
+
   document.getElementById('popup').style.display = 'none';
 
   const music = document.getElementById('bgMusic');
   const heartbeat = document.getElementById('heartbeat');
 
-  if (navigator.vibrate) navigator.vibrate([200,100,200]);
+  // Vibrate (Android)
+  if (navigator.vibrate) {
+    navigator.vibrate([200, 100, 200, 100, 300]);
+  }
 
-  if (music) music.volume = 0.2;
+  // Lower background music for effect
+  if (music) {
+    music.volume = 0.2;
+  }
 
+  // Play heartbeat synced
   if (heartbeat) {
     heartbeat.currentTime = 0;
     heartbeat.play().catch(()=>{});
   }
 
+  // Hearts animation
   for (let i = 0; i < 30; i++) {
     let heart = document.createElement('div');
     heart.className = 'heart';
@@ -219,14 +205,39 @@ function loveBurst() {
     setTimeout(() => heart.remove(), 4000);
   }
 
+  // Fireworks burst at same time
   for (let i = 0; i < 5; i++) {
-    setTimeout(() => launchFireworks(), i * 300);
+    setTimeout(() => {
+      launchFireworks();
+    }, i * 300);
   }
 
+  // Restore music + final screen
   setTimeout(() => {
     if (music) music.volume = 0.6;
     document.getElementById('finalScreen').style.display = 'block';
   }, 2500);
+}
+
+  // Heartbeat sound
+  document.getElementById('heartbeat').play();
+
+  // Hearts
+  for (let i = 0; i < 30; i++) {
+    let heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.innerText = '💕';
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.style.bottom = '0px';
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 4000);
+  }
+
+  // Final screen after delay
+  setTimeout(() => {
+    document.getElementById('finalScreen').style.display = 'block';
+  }, 2000);
 }
 
 // Fireworks
@@ -276,13 +287,11 @@ window.addEventListener('resize', () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 });
-
-// Music autoplay trick
+// Auto play music after user interaction (important for Android)
 document.body.addEventListener('click', () => {
   const music = document.getElementById('bgMusic');
   if (music.paused) {
-    music.muted = false;
-    music.volume = 0.6;
+    music.volume = 0.6; // soft romantic volume
     music.play().catch(()=>{});
   }
 });
@@ -290,5 +299,4 @@ document.body.addEventListener('click', () => {
 </script>
 
 </body>
-</html>
-
+</html>   in this code make one line to write msag 
